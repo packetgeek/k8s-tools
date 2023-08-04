@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Tim Kramer (21 May 2023)
+
+echo ''
+echo "#################################################################"
+echo "# This command assumes that you're also using the chns command. #"
+echo "#################################################################"
+echo ''
+
+pod=$1
+node=$(kubectl get pod $pod -o jsonpath="{.spec.nodeName}")
+cid=$(kubectl get pod $pod -o jsonpath="{.status.containerStatuses[].containerID}" |sed 's/.*\/\///')
+
+echo "pod = $pod"
+echo "node = $node"
+echo "cid = $cid"
+echo ''
+
+# Choose one of the following.  You may need to try one of the others, depending on 
+# what shell is installed in the target container
+
+ssh -tt $node "stty raw -echo;sudo /usr/local/sbin/runc --root /run/containerd/runc/k8s.io/ exec -t -u 0 $cid sh -c 'echo;sh'"
+

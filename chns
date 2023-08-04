@@ -1,0 +1,4 @@
+#!/usr/bin/perl
+
+$ns=$ARGV[0];
+system("kubectl config set-context --current --namespace='$ns'");

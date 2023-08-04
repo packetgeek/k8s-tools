@@ -1,0 +1,6 @@
+#!/usr/bin/perl
+
+$temp=`kubectl config get-contexts |grep kubernetes-admin`;
+($junik,$junk,$junk,$junk,$ns)=split(/\s+/,$temp);
+print "$ns\n";
+
